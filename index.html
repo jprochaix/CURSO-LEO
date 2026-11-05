@@ -1,0 +1,96 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pagina de Prueba de Juan Pablo Rochaix</title>
+  <link rel="stylesheet" href="main.css">
+</head>
+<body>
+  <div class="contenedor">
+    <h1>Pagina de Prueba de Juan Pablo Rochaix</h1>
+
+    <form id="formulario" >
+      <div class="campo">
+        <label for="fechaInicio">Fecha de Inicio:</label><br>
+        <input type="date" id="fechaInicio" name="fechaInicio">
+      </div>
+
+      <div class="campo">
+        <input type="checkbox" id="meGusto" name="meGusto">
+        <label for="meGusto">Me gustó</label>
+      </div>
+
+      <div class="campo">
+        <label>Color:</label><br>
+        <input type="radio" id="rojo" name="color" value="Rojo">
+        <label for="rojo" style="color: red;">Rojo</label>
+        <input type="radio" id="amarillo" name="color" value="Amarillo">
+        <label for="amarillo" style="color: gold;">Amarillo</label>
+        <input type="radio" id="azul" name="color" value="Azul">
+        <label for="azul" style="color: blue;">Azul</label>
+      </div>
+
+      <div class="campo">
+        <label for="comentarios">Comentarios:</label><br>
+        <textarea id="comentarios" name="comentarios"></textarea>
+      </div>
+
+      <table id="tablaFamiliares">
+        <caption>Grupo Familiar</caption>
+        <thead>
+          <tr>
+            <th>Apellido</th>
+            <th>Nombre</th>
+            <th>Parentesco</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td></tr>
+          <tr><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td></tr>
+          <tr><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td></tr>
+          <tr><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td></tr>
+        </tbody>
+      </table>
+
+      <button type="button" id="btnConfirmar">Confirmar Datos</button>
+      <button type="button" id="btnLimpiar">Limpiar Datos</button>
+    </form>
+
+    <div id="resultado"></div>
+  </div>
+
+  <script>
+    const form = document.getElementById('formulario');
+    const resultado = document.getElementById('resultado');
+
+    document.getElementById('btnConfirmar').addEventListener('click', function () {
+      const color = form.color.value;
+      if (!color) {
+        alert('Seleccione un Color');
+        resultado.style.display = 'none';
+        return;
+      }
+      let familiares = '';
+      document.querySelectorAll('#tablaFamiliares tbody tr').forEach(function (fila) {
+        const v = Array.from(fila.querySelectorAll('input')).map(function (i) { return i.value.trim(); });
+        if (v.some(function (x) { return x; })) {
+          familiares += '\n  - ' + v.join(' | ');
+        }
+      });
+      resultado.textContent =
+        'Fecha de inicio: ' + (form.fechaInicio.value || '(sin fecha)') + '\n' +
+        'Me gustó: ' + (form.meGusto.checked ? 'Sí' : 'No') + '\n' +
+        'Color: ' + color + '\n' +
+        'Comentarios: ' + (form.comentarios.value || '(sin comentarios)') + '\n' +
+        'Familiares (Apellido | Nombre | Parentesco):' + (familiares || ' (ninguno)');
+      resultado.style.display = 'block';
+    });
+
+    document.getElementById('btnLimpiar').addEventListener('click', function () {
+      form.reset();
+      resultado.style.display = 'none';
+    });
+  </script>
+</body>
+</html>
